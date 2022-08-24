@@ -140,11 +140,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2da901c76c60b2e448ca715b578728f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transitionSpeed: 0.3
+  transitionSpeed: 10
   zoom: 3
   normal: 5
   timer: 0
-  timeZoom: 5
+  timeZoom: 2
 --- !u!114 &2126853285
 MonoBehaviour:
   m_ObjectHideFlags: 0
