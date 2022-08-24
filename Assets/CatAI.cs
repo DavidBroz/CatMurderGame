@@ -12,7 +12,16 @@ public class CatAI : MonoBehaviour
 
     private float lastJumpTime = 0;
 
+
+    public float jumpWindUp = 1f;
+    public float jumpSpeed = 100f;
+    public float landingDuration = 1f;
+
+    private bool isMidJump=false;
+
     // Start is called before the first frame update
+
+    IEnumerator jumpCorutine;
     void Start()
     {
         
@@ -21,7 +30,7 @@ public class CatAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += new Vector3(movementSpeed * (isFacingRight?1:-1), 0, 0);
+        if(!isMidJump) transform.position += new Vector3(movementSpeed * (isFacingRight?1:-1), 0, 0);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -39,15 +48,28 @@ public class CatAI : MonoBehaviour
             float roll = Random.Range(0f, 1f);
             Debug.Log("Roll: "+roll+" need to beat "+ prob);
             if (roll < prob) {
-                Jump(collision.GetComponent<CatJumpPoint>().jumpDestination);
+                jumpCorutine = Jump(collision.GetComponent<CatJumpPoint>().jumpDestination);
+                Debug.Log("Jumping");
+                StartCoroutine(jumpCorutine);
                 lastJumpTime = Time.time;
             }
         }
     }
 
-    private void Jump(GameObject jumpDestination)
+    private IEnumerator Jump(GameObject jumpDestination)
     {
-        Debug.Log("CanJumps");  
-        transform.position = jumpDestination.transform.position;
+        Debug.Log("JumpCorutine starterd");
+        isMidJump = true;
+        yield return new WaitForSeconds(jumpWindUp);
+
+        while (!transform.position.Equals(jumpDestination.transform.position)) {
+            Debug.Log("JumpLoop");
+
+            transform.position = Vector3.MoveTowards(transform.position, jumpDestination.transform.position, jumpSpeed);
+            yield return null;
+        }
+        yield return new WaitForSeconds(landingDuration);
+        isMidJump =false;
+       
     }
 }

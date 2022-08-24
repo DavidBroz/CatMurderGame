@@ -11,6 +11,8 @@ public class MouseController : MonoBehaviour
 
     public float mouseSpeed;
     public bool isFacingRight=true;
+
+    public bool stunned = false;
     void Start()
     {
         
@@ -20,8 +22,9 @@ public class MouseController : MonoBehaviour
     void Update()
     {
         float hor = Input.GetAxis("Horizontal");
-        if (hor != 0) {
-            transform.position += new Vector3(mouseSpeed*hor,0,0);
+        if (hor != 0 && !stunned) {
+            GetComponent<Rigidbody2D>().velocity = new Vector3(mouseSpeed * hor, 0, 0);
+
             if (hor > 0 && !isFacingRight)
             {
                 Flip();
@@ -31,7 +34,7 @@ public class MouseController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.W) && atMouseHole!=null)
+        if (Input.GetKeyDown(KeyCode.W) && atMouseHole!=null && !stunned)
         {
             transform.position = atMouseHole.GetComponent<MouseHole>().otherMouseHole.transform.position;
 
