@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class MouseController : MonoBehaviour
     public GameObject atMouseHole;
 
     public float mouseSpeed;
+    public bool isFacingRight=true;
     void Start()
     {
         
@@ -19,13 +21,27 @@ public class MouseController : MonoBehaviour
     {
         float hor = Input.GetAxis("Horizontal");
         if (hor != 0) {
-            transform.position += new Vector3(mouseSpeed*hor,0,0); 
+            transform.position += new Vector3(mouseSpeed*hor,0,0);
+            if (hor > 0 && !isFacingRight)
+            {
+                Flip();
+            }
+            else if (hor < 0 && isFacingRight) { 
+                Flip(); 
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.W) && atMouseHole!=null)
         {
             transform.position = atMouseHole.GetComponent<MouseHole>().otherMouseHole.transform.position;
+
         }
+    }
+
+    private void Flip()
+    {
+        isFacingRight = !isFacingRight;
+        transform.eulerAngles += new Vector3(0, 180, 0);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
