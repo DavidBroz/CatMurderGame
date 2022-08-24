@@ -508,7 +508,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1340988064}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2da901c76c60b2e448ca715b578728f3, type: 3}
   m_Name: 
@@ -644,7 +644,7 @@ GameObject:
   - component: {fileID: 1655769034}
   - component: {fileID: 1655769039}
   - component: {fileID: 1655769040}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -666,6 +666,9 @@ MonoBehaviour:
   movementSpeed: 0.01
   jumpCooldown: 2
   isFacingRight: 1
+  jumpWindUp: 0.5
+  jumpSpeed: 0.1
+  landingDuration: 0.2
 --- !u!61 &1655769035
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -773,7 +776,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1655769033}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.13, y: -3.49, z: -0.035889346}
+  m_LocalPosition: {x: -7.87, y: -1.74, z: -0.035889346}
   m_LocalScale: {x: 10, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1066,11 +1069,11 @@ GameObject:
   - component: {fileID: 2083348173}
   - component: {fileID: 2083348172}
   - component: {fileID: 2083348171}
-  - component: {fileID: 2083348170}
   - component: {fileID: 2083348174}
+  - component: {fileID: 2083348170}
   - component: {fileID: 2083348175}
   - component: {fileID: 2083348176}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Mouse
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1090,7 +1093,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   atMouseHole: {fileID: 0}
-  mouseSpeed: 0.1
+  mouseSpeed: 10
+  isFacingRight: 1
+  stunned: 0
 --- !u!212 &2083348171
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1158,7 +1163,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 1.5
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -1172,7 +1177,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2083348169}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.468, y: -4.16, z: 0}
+  m_LocalPosition: {x: -8.37, y: -4.05, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1233,8 +1238,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4b31d418de4e6043896e05091cfb939, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitForce: 50
+  knockbackForce: 100
+  knockbakHeight: 0.35
   hitCooldown: 1
+  stunDuration: 1
 --- !u!1001 &2638336308147760375
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1246,6 +1253,10 @@ PrefabInstance:
       propertyPath: jumpDestination
       value: 
       objectReference: {fileID: 2018476155}
+    - target: {fileID: 2638336308179032940, guid: 6cf1df107aad0b6419367f01a9442721, type: 3}
+      propertyPath: jumpProbability
+      value: 0.531
+      objectReference: {fileID: 0}
     - target: {fileID: 2638336308179032942, guid: 6cf1df107aad0b6419367f01a9442721, type: 3}
       propertyPath: m_RootOrder
       value: 11

@@ -15,11 +15,13 @@ public class CatAI : MonoBehaviour
 
     public float jumpWindUp = 1f;
     public float jumpSpeed = 100f;
-    public float jumpDuration = 10f;
+    public float landingDuration = 1f;
 
     private bool isMidJump=false;
 
     // Start is called before the first frame update
+
+    IEnumerator jumpCorutine;
     void Start()
     {
         
@@ -46,14 +48,15 @@ public class CatAI : MonoBehaviour
             float roll = Random.Range(0f, 1f);
             Debug.Log("Roll: "+roll+" need to beat "+ prob);
             if (roll < prob) {
+                jumpCorutine = Jump(collision.GetComponent<CatJumpPoint>().jumpDestination);
                 Debug.Log("Jumping");
-                StartCoroutine("Jump", collision.GetComponent<CatJumpPoint>().jumpDestination);
+                StartCoroutine(jumpCorutine);
                 lastJumpTime = Time.time;
             }
         }
     }
 
-    private IEnumerable Jump(GameObject jumpDestination)
+    private IEnumerator Jump(GameObject jumpDestination)
     {
         Debug.Log("JumpCorutine starterd");
         isMidJump = true;
@@ -61,13 +64,12 @@ public class CatAI : MonoBehaviour
 
         while (!transform.position.Equals(jumpDestination.transform.position)) {
             Debug.Log("JumpLoop");
-            transform.transform.position = new Vector3(
-                    Mathf.MoveTowards(jumpDestination.transform.position.x, jumpDestination.transform.position.x, Time.deltaTime * jumpSpeed),
-                    Mathf.MoveTowards(jumpDestination.transform.position.y, jumpDestination.transform.position.y, Time.deltaTime * jumpSpeed),
-                    Mathf.MoveTowards(jumpDestination.transform.position.z, jumpDestination.transform.position.z, Time.deltaTime * jumpSpeed)
-                ); 
+
+            transform.position = Vector3.MoveTowards(transform.position, jumpDestination.transform.position, jumpSpeed);
+            yield return null;
         }
-        isMidJump=false;
+        yield return new WaitForSeconds(landingDuration);
+        isMidJump =false;
        
     }
 }
